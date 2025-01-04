@@ -22,6 +22,10 @@ func RunServer(r *gin.Engine, addr, serverName string) {
 	// 在单独的Goroutine中启动服务，使主线程能够继续执行（监听信号、管理关闭逻辑等）
 	go func() {
 		log.Printf("%s running on port %s\n", serverName, addr)
+		// 捕获 ListenAndServe 的错误，除了 http.ErrServerClosed（这是正常关闭的标志），其他错误会被记录并导致程序终止。
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
 	}()
 
 	// 捕获关闭信号，用于优雅关闭服务
