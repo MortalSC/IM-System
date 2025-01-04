@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"github.com/MortalSC/IM-System/config"
 	"github.com/go-redis/redis/v8"
 	"time"
 )
@@ -17,11 +18,7 @@ type RedisCache struct {
 // init 函数用于初始化 Redis 连接
 func init() {
 	// 初始化连接
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
-	})
+	rdb := redis.NewClient(config.C.InitRedisOptions())
 	// 连接健康检查
 	_, err := rdb.Ping(context.Background()).Result()
 	if err != nil {

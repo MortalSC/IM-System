@@ -2,12 +2,13 @@ package user
 
 import (
 	"context"
+	"fmt"
 	common2 "github.com/MortalSC/IM-System/common"
+	"github.com/MortalSC/IM-System/common/logs"
 	"github.com/MortalSC/IM-System/pkg/dao"
 	"github.com/MortalSC/IM-System/pkg/model"
 	"github.com/MortalSC/IM-System/pkg/repo"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"time"
 )
@@ -46,7 +47,7 @@ func (h *HandlerUser) getCaptcha(ctx *gin.Context) {
 	// 使用 Goroutine 异步调用短信平台，以便快速响应接口请求
 	go func() {
 		time.Sleep(2 * time.Second) // 模拟调用短信平台的耗时操作
-		log.Println("短信平台调用成功，发送短信")
+		logs.LG.Info("短信平台调用成功，发送短信")
 
 		// 5. 存储验证码到 Redis
 		// 使用带超时的上下文，避免 Redis 请求阻塞主进程
@@ -56,7 +57,7 @@ func (h *HandlerUser) getCaptcha(ctx *gin.Context) {
 		// 将验证码存储到 Redis，设置过期时间为 15 分钟
 		err := h.cache.Put(c, "REGISTER_"+mobile, code, 15*time.Minute)
 		if err != nil {
-			log.Printf("验证码存入 Redis 出错，原因: %v\n", err)
+			logs.LG.Error(fmt.Sprintf("验证码存入 Redis 出错，原因: %v\n", err))
 		}
 	}()
 

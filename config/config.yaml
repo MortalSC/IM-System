@@ -1,0 +1,15 @@
+server:
+   name: "web server"
+   addr: "127.0.0.1:80"
+zap:
+   debugFileName: "E:\\CPPToGo\\IM-System\\logs\\debug\\project-debug.log"
+   infoFileName: "E:\\CPPToGo\\IM-System\\logs\\info\\project-info.log"
+   warnFileName: "E:\\CPPToGo\\IM-System\\logs\\error\\project-error.log"
+   maxSize: 500,
+   maxAge: 28,
+   MaxBackups: 3
+redis:
+   host: "localhost"
+   port: 6379
+   password: ""
+   db: 0
