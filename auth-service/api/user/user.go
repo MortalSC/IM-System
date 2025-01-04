@@ -4,8 +4,8 @@ import (
 	"github.com/MortalSC/IM-System/auth-service/internal/errors"
 	"github.com/MortalSC/IM-System/auth-service/internal/utils"
 	"github.com/MortalSC/IM-System/auth-service/pkg/model"
+	libLog "github.com/MortalSC/IM-System/lib/log"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"time"
 )
@@ -36,7 +36,7 @@ func (h *HandlerUser) getCaptcha(ctx *gin.Context) {
 	// 使用 Goroutine 异步调用短信平台，以便快速响应接口请求
 	go func() {
 		time.Sleep(2 * time.Second) // 模拟调用短信平台的耗时操作
-		log.Println("短信平台调用成功，发送短信")
+		libLog.IMLog.Info("短信平台调用成功，发送短信")
 
 		// 5. 存储验证码到 Redis
 		// TODO -> 使用带超时的上下文，避免 Redis 请求阻塞主进程

@@ -1,0 +1,13 @@
+# auth-service 服务配置
+server:
+  name: "auth-service"
+  addr: "127.0.0.1:80"
+
+# 日志配置
+zap:
+  debugFileName: "E:\\CPPToGo\\IM-System\\logs\\debug\\project-debug.log"
+  infoFileName: "E:\\CPPToGo\\IM-System\\logs\\info\\project-info.log"
+  warnFileName: "E:\\CPPToGo\\IM-System\\logs\\error\\project-error.log"
+  maxSize: 500,
+  maxAge: 28,
+  MaxBackups: 3
