@@ -1,7 +1,7 @@
-# auth-service 服务配置
+# api-center 服务配置
 server:
-  name: "auth-service"
-  addr: "127.0.0.1:8080"
+  name: "api-service"
+  addr: "127.0.0.1:80"
 
 # 日志配置
 zap:
@@ -11,15 +11,3 @@ zap:
   maxSize: 500,
   maxAge: 28,
   MaxBackups: 3
-
-# redis配置
-redis:
-  host: "localhost"
-  port: 6379
-  password: ""
-  db: 0
-
-# grpc 配置
-grpc:
-  addr: "127.0.0.1:8881"
-  name: "auth-service"

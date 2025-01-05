@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func RunServer(r *gin.Engine, addr, serverName string) {
+func RunServer(r *gin.Engine, addr, serverName string, stop func()) {
 	// 创建一个http.Server实例，使用Gin作为处理器
 	// -> 使用标准库http.Server配合Gin，可以更灵活地管理服务（不如自定义超时等）
 	srv := &http.Server{
@@ -38,6 +38,10 @@ func RunServer(r *gin.Engine, addr, serverName string) {
 	// 关闭服务
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
+
+	if stop != nil {
+		stop()
+	}
 
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatalf("%s Shutdown Failed, cause by : %s\n", serverName, err)
