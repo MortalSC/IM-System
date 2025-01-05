@@ -2,6 +2,7 @@ package config
 
 import (
 	libLog "github.com/MortalSC/IM-System/lib/log"
+	"github.com/go-redis/redis/v8"
 	"github.com/spf13/viper"
 	"log"
 	"os"
@@ -35,6 +36,8 @@ func InitConfig() *Config {
 	conf.InitServerConfig()
 	// 读取日志配置
 	conf.InitZapLog()
+	// 读取redis配置
+	conf.InitRedisOptions()
 
 	return conf
 }
@@ -65,5 +68,13 @@ func (c *Config) InitZapLog() {
 	err := libLog.InitLogger(lc)
 	if err != nil {
 		log.Fatalln(err)
+	}
+}
+
+func (c *Config) InitRedisOptions() *redis.Options {
+	return &redis.Options{
+		Addr:     c.viper.GetString("redis.host") + ":" + c.viper.GetString("redis.port"),
+		Password: c.viper.GetString("redis.password"), // no password set
+		DB:       c.viper.GetInt("redis.db"),          // use default DB
 	}
 }

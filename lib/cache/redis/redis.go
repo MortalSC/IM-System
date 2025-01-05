@@ -19,11 +19,11 @@ type IMRedisCache struct {
 // 返回值：
 // - cache.Cache: 实现了通用 Cache 接口的 Redis 缓存实例
 // - error: 如果初始化失败，返回错误
-func NewRedisCache(addr, password string, db int) (cache.Cache, error) {
+func NewRedisCache(r *redis.Options) (cache.Cache, error) {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     addr,
-		Password: password,
-		DB:       db,
+		Addr:     r.Addr,
+		Password: r.Password,
+		DB:       r.DB,
 	})
 
 	// 检查连接是否正常
