@@ -1,5 +1,7 @@
-github.com/MortalSC/IM-System/lib v0.0.0-20250105032420-086c659d8375 h1:RZjOK96tRw445yJv1c+eY/M7Ddx/JlWx+8fHSSvPL0M=
-github.com/MortalSC/IM-System/lib v0.0.0-20250105032420-086c659d8375/go.mod h1:/AUZm11tHBmxWZd3JAKbYix1lxs/SiGJCsOShtAXy1I=
+github.com/MortalSC/IM-System/lib v0.2.0 h1:GNAvE8gFQ79mVi6Xr1wKhfgbdfAFeeBNm9MkKNXbYe4=
+github.com/MortalSC/IM-System/lib v0.2.0/go.mod h1:6qvypRh/tyb2nCl2TIRiN3HSlZMwPHksfj5/6WPuQhQ=
+github.com/MortalSC/IM-System/lib v0.3.0 h1:l6Glm+MWNA5lnBFsOtAzo711I57qQAQbNdebPOQj3rU=
+github.com/MortalSC/IM-System/lib v0.3.0/go.mod h1:6qvypRh/tyb2nCl2TIRiN3HSlZMwPHksfj5/6WPuQhQ=
 github.com/bytedance/sonic v1.12.6 h1:/isNmCUF2x3Sh8RAp/4mh4ZGkcFAX/hLrzrK3AvpRzk=
 github.com/bytedance/sonic v1.12.6/go.mod h1:B8Gt/XvtZ3Fqj+iSKMypzymZxw/FVwgIGKzMzT9r/rk=
 github.com/bytedance/sonic/loader v0.1.1/go.mod h1:ncP89zfokxS5LZrJxl5z0UJcsk4M4yY2JpfqGeCtNLU=

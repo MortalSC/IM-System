@@ -3,7 +3,7 @@ module github.com/MortalSC/IM-System/auth-service
 go 1.22.7
 
 require (
-	github.com/MortalSC/IM-System/lib v0.0.0-20250105032420-086c659d8375
+	github.com/MortalSC/IM-System/lib v0.3.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/spf13/viper v1.19.0

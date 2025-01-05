@@ -28,7 +28,6 @@ func (h *HandlerUser) getCaptcha(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, result.Failed(2002, "手机号不能为空"))
 		return
 	}
-	libLog.IMLog.Info(fmt.Sprintf("请求验证码，手机号：%s", mobile))
 
 	_, err := LoginServiceClient.GetCaptcha(ctx, &loginServiceV1.CaptchaMessage{Mobile: mobile})
 	if err != nil {

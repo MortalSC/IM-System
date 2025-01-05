@@ -20,7 +20,4 @@ func main() {
 
 	// 启动服务/中止 + grpc服务停止
 	srv.RunServer(r, config.Cfg.SrvCfg.Addr, config.Cfg.SrvCfg.Name, stop)
-
-	//// 启动服务/中止
-	//srv.RunServer(r, cfg.SrvCfg.Addr, cfg.SrvCfg.Name)
 }
