@@ -2,32 +2,37 @@ package redis
 
 import (
 	"context"
+	"github.com/MortalSC/IM-System/lib/cache"
 	"time"
 )
 import "github.com/go-redis/redis/v8"
-
-// IMRedis : 全局变量IMRedis -> RedisCache实例
-var IMRedis *IMRedisCache
 
 type IMRedisCache struct {
 	rdb *redis.Client
 }
 
-// init 函数用于初始化Redis连接
-func init() {
-	// 初始化连接
+// NewRedisCache 创建一个新的 Redis 缓存实例
+// 参数：
+// - addr: Redis 地址
+// - password: Redis 密码
+// - db: Redis 数据库索引
+// 返回值：
+// - cache.Cache: 实现了通用 Cache 接口的 Redis 缓存实例
+// - error: 如果初始化失败，返回错误
+func NewRedisCache(addr, password string, db int) (cache.Cache, error) {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
+		Addr:     addr,
+		Password: password,
+		DB:       db,
 	})
 
-	// 检查连接健康
+	// 检查连接是否正常
 	_, err := rdb.Ping(context.Background()).Result()
 	if err != nil {
-		panic("Failed to connect to Redis: " + err.Error())
+		return nil, err
 	}
-	IMRedis = &IMRedisCache{rdb: rdb}
+
+	return &IMRedisCache{rdb: rdb}, nil
 }
 
 // Put 方法用于将 key-value 数据存入 Redis，并设置过期时间
@@ -55,5 +60,9 @@ func (rc *IMRedisCache) Put(ctx context.Context, key, val string, expire time.Du
 // - error: 如果操作失败，返回错误信息；成功则返回 nil
 func (rc *IMRedisCache) Get(ctx context.Context, key string) (string, error) {
 	res, err := rc.rdb.Get(ctx, key).Result()
+	if err == redis.Nil {
+		// 返回空字符串表示 key 不存在
+		return "", nil
+	}
 	return res, err
 }
