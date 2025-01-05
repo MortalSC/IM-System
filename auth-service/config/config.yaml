@@ -1,7 +1,7 @@
 # auth-service 服务配置
 server:
   name: "auth-service"
-  addr: "127.0.0.1:80"
+  addr: "127.0.0.1:8080"
 
 # 日志配置
 zap:
@@ -18,3 +18,8 @@ redis:
   port: 6379
   password: ""
   db: 0
+
+# grpc 配置
+grpc:
+  addr: "127.0.0.1:8881"
+  name: "auth-service"

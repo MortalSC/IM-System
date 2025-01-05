@@ -13,6 +13,7 @@ var Cfg = InitConfig()
 type Config struct {
 	viper  *viper.Viper
 	SrvCfg *ServerConfig
+	GC     *GrpcConfig
 }
 
 func InitConfig() *Config {
@@ -38,6 +39,8 @@ func InitConfig() *Config {
 	conf.InitZapLog()
 	// 读取redis配置
 	conf.InitRedisOptions()
+	// 读取grpc配置
+	conf.InitGrpcConfig()
 
 	return conf
 }
@@ -77,4 +80,16 @@ func (c *Config) InitRedisOptions() *redis.Options {
 		Password: c.viper.GetString("redis.password"), // no password set
 		DB:       c.viper.GetInt("redis.db"),          // use default DB
 	}
+}
+
+type GrpcConfig struct {
+	Name string
+	Addr string
+}
+
+func (c *Config) InitGrpcConfig() {
+	gc := &GrpcConfig{}
+	gc.Name = c.viper.GetString("grpc.name")
+	gc.Addr = c.viper.GetString("grpc.addr")
+	c.GC = gc
 }
