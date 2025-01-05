@@ -32,8 +32,8 @@ type LogConfig struct {
 func InitLogger(cfg *LogConfig) (err error) {
 	// 获取不同级别的日志写入器
 	writeSyncDebug := getLogWriter(cfg.DebugFileName, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
-	writeSyncInfo := getLogWriter(cfg.DebugFileName, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
-	writeSyncWarn := getLogWriter(cfg.DebugFileName, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
+	writeSyncInfo := getLogWriter(cfg.InfoFileName, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
+	writeSyncWarn := getLogWriter(cfg.WarnFileName, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
 	// 设置日志编码
 	encoder := getEncoder()
 	// 创建日志核心组件
