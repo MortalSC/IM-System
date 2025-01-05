@@ -3,8 +3,9 @@ module github.com/MortalSC/IM-System/auth-service
 go 1.22.7
 
 require (
-	github.com/MortalSC/IM-System/lib v0.0.0-20250105024036-afbb7a91686c
+	github.com/MortalSC/IM-System/lib v0.0.0-20250105032420-086c659d8375
 	github.com/gin-gonic/gin v1.10.0
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/spf13/viper v1.19.0
 )
 
@@ -21,7 +22,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.23.0 // indirect
-	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/goccy/go-json v0.10.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
