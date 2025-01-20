@@ -7,44 +7,39 @@ import (
 	"slices"
 )
 
-// TODO: ；联动日志
+// 日志级别常量定义，后续对接日志
 const (
-	LevelWarn = iota + 1
-	LevelInfo
-	LevelTrace
-	LevelDebug
-	LevelError
-	LevelFatal
-	LevelBuss
+	LevelWarn  = iota + 1 // 1: Warn 级别
+	LevelInfo             // 2: Info 级别
+	LevelTrace            // 3: Trace 级别
+	LevelDebug            // 4: Debug 级别
+	LevelError            // 5: Error 级别
+	LevelFatal            // 6: Fatal 级别
+	LevelBuss             // 7: Buss 业务级别日志
 )
 
+// loggableLevel 类型用于表示日志级别。
 type loggableLevel int
 
 var (
-	defaultLoggableLevel = loggableLevel(LevelWarn) // 默认WARN级别
+	defaultLoggableLevel = loggableLevel(LevelWarn) // 默认日志级别为 WARN
 )
 
+// ILogLevel 接口定义了一个结构体，该结构体可以提供日志级别并且具有错误链功能。
 type ILogLevel interface {
-	error
-	Level() loggableLevel
-	Cause() error
+	error                 // 实现了 error 接口
+	Level() loggableLevel // 返回日志级别
+	Cause() error         // 获取底层错误
 }
 
-// 获取err中包含的日志级别
-// error链中存在多个日志级别日志时取最大的级别日志
-// 没有设置日志级别日志时返回WARN级别日志
-// 返回日志级别的定义与kgo/log中的日志级别定义保持一致
-//
-// 返回参数解释
-//
-//	causeErr: 通过liberr.Cause拿到的底层的error
-//	level: err所包含的日志级别
-//	ok: 仅表示是否存在err是否为ILogLevel, ok==true不代表causeErr!=nil；ok==false时，表明err不是ILogLevel
+// LoggableLevel 获取 error 中包含的日志级别。
+// 它会遍历错误链，返回包含最大日志级别的错误和该日志级别。
 func LoggableLevel(err error) (cause error, level int, ok bool) {
 	cause, l, ok := GetLoggableLevel(err)
 	return cause, int(l), ok
 }
 
+// GetLoggableLevel 返回错误链中的日志级别。遍历整个错误链，获取最大日志级别。
 func GetLoggableLevel(err error) (causeErr error, level loggableLevel, ok bool) {
 	level = defaultLoggableLevel
 	levels := make([]loggableLevel, 0, 4)
@@ -74,14 +69,17 @@ func GetLoggableLevel(err error) (causeErr error, level loggableLevel, ok bool) 
 		return causeErr, levels[0], true
 	}
 
+	// 返回最大日志级别
 	return causeErr, slices.Max(levels), true
 }
 
+// loggableLevelMsg 封装了带有日志级别信息的错误。
 type loggableLevelMsg struct {
 	withMessage
 	level loggableLevel
 }
 
+// Level 返回错误的日志级别。
 func (llm *loggableLevelMsg) Level() loggableLevel {
 	if llm == nil {
 		return LevelInfo
@@ -89,7 +87,7 @@ func (llm *loggableLevelMsg) Level() loggableLevel {
 	return llm.level
 }
 
-// 封装error，返回上层打印TRACE级别日志
+// WithTraceLogLevel 封装错误并将其标记为 TRACE 级别日志。
 func WithTraceLogLevel(err error) error {
 	if err == nil {
 		return nil
@@ -101,7 +99,7 @@ func WithTraceLogLevel(err error) error {
 	}
 }
 
-// 封装error，返回上层打印TRACE级别日志
+// WithTraceLogLevelMsg 封装错误并返回 TRACE 级别日志，允许格式化消息。
 func WithTraceLogLevelMsg(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
@@ -116,7 +114,7 @@ func WithTraceLogLevelMsg(err error, format string, args ...interface{}) error {
 	}
 }
 
-// 封装error，返回上层打印DEBUG级别日志
+// WithDebugLogLevel 封装错误并将其标记为 DEBUG 级别日志。
 func WithDebugLogLevel(err error) error {
 	if err == nil {
 		return nil
@@ -128,6 +126,7 @@ func WithDebugLogLevel(err error) error {
 	}
 }
 
+// WithDebugLogLevelMsg 封装错误并返回 DEBUG 级别日志，允许格式化消息。
 func WithDebugLogLevelMsg(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
@@ -142,7 +141,7 @@ func WithDebugLogLevelMsg(err error, format string, args ...interface{}) error {
 	}
 }
 
-// 封装error，返回到上层打印INFO级别日志
+// WithInfoLogLevel 封装错误并将其标记为 INFO 级别日志。
 func WithInfoLogLevel(err error) error {
 	if err == nil {
 		return nil
@@ -154,6 +153,7 @@ func WithInfoLogLevel(err error) error {
 	}
 }
 
+// WithInfoLogLevelMsg 封装错误并返回 INFO 级别日志，允许格式化消息。
 func WithInfoLogLevelMsg(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
@@ -168,7 +168,7 @@ func WithInfoLogLevelMsg(err error, format string, args ...interface{}) error {
 	}
 }
 
-// 封装error，返回到上层打印WARN级别日志
+// WithWarnLogLevel 封装错误并将其标记为 WARN 级别日志。
 func WithWarnLogLevel(err error) error {
 	if err == nil {
 		return nil
@@ -180,6 +180,7 @@ func WithWarnLogLevel(err error) error {
 	}
 }
 
+// WithWarnLogLevelMsg 封装错误并返回 WARN 级别日志，允许格式化消息。
 func WithWarnLogLevelMsg(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
@@ -194,7 +195,7 @@ func WithWarnLogLevelMsg(err error, format string, args ...interface{}) error {
 	}
 }
 
-// 封装error，返回到上层打印ERROR级别日志
+// WithErrorLogLevel 封装错误并将其标记为 ERROR 级别日志。
 func WithErrorLogLevel(err error) error {
 	if err == nil {
 		return nil
@@ -206,6 +207,7 @@ func WithErrorLogLevel(err error) error {
 	}
 }
 
+// WithErrorLogLevelMsg 封装错误并返回 ERROR 级别日志，允许格式化消息。
 func WithErrorLogLevelMsg(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
@@ -220,7 +222,7 @@ func WithErrorLogLevelMsg(err error, format string, args ...interface{}) error {
 	}
 }
 
-// 封装error，返回到上层打印FATAL级别日志
+// WithFatalLogLevel 封装错误并将其标记为 FATAL 级别日志。
 func WithFatalLogLevel(err error) error {
 	if err == nil {
 		return nil
@@ -232,6 +234,7 @@ func WithFatalLogLevel(err error) error {
 	}
 }
 
+// WithFatalLogLevelMsg 封装错误并返回 FATAL 级别日志，允许格式化消息。
 func WithFatalLogLevelMsg(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
@@ -246,7 +249,7 @@ func WithFatalLogLevelMsg(err error, format string, args ...interface{}) error {
 	}
 }
 
-// 封装error，返回到上层打印BUSS级别日志
+// WithBussLogLevel 封装错误并将其标记为 BUSS 业务级别日志。
 func WithBussLogLevel(err error) error {
 	if err == nil {
 		return nil
@@ -258,6 +261,7 @@ func WithBussLogLevel(err error) error {
 	}
 }
 
+// WithBussLogLevelMsg 封装错误并返回 BUSS 级别日志，允许格式化消息。
 func WithBussLogLevelMsg(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
